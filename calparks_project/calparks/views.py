@@ -115,7 +115,8 @@ def userrecommendations_add(request, template_name='calparks/userrecommendations
             park = request.POST['park']
             allParkEntries = UserRecommendations.objects.filter(park__id=park)
             avg = allParkEntries.aggregate(Avg('user_rating'))
-            intAvg = math.ceil(avg['user_rating__avg'])
+            intAvg = avg['user_rating__avg']
+            print intAvg
 #            avgRec = UserRecommendations.objects.filter(park__id=park).aggregate(Avg(user_rating))
             userrecommendations = form.save(commit=False)
             userrecommendations.user = request.user

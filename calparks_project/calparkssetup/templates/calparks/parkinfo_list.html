@@ -36,7 +36,7 @@
                 <td>{{ park.county }}</td>
                 <td>{{ park.park_type }} </td>
                 <td>{{ park.park_size }} </td>
-                <td>{{ park.url }} </td>
+                <td><a href="{{park.url}}">{{park.url}}</td>
                 <td> <a href="{% url 'parkinfo_reviews' pk=park.id %}" class="rowlink" > {{ park.average_user_rec }}</td>
 		</td>
             </tr>
