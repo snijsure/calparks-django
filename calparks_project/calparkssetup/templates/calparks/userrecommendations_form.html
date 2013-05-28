@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load thumbnail pagination_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h2>Add User Recommendation currernt user {{user.username}}</h2>
+{% crispy form %}
+{% endblock %}
+

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load pagination_tags %}
+
+{% block content %}
+
+
+<form action="{% url 'userrecommendations_add' %}" method="post">
+{% csrf_token %}
+    <div class="row">
+       <span class="span11"><h2>Park Review</h2></span>
+       <button type="submit" class="span1 pull-right offset1 deleteConfirm btn btn-danger">
+		<i class="icon-trash icon-white"></i>  
+	</button>
+       <a class="span1 pull-right offset1 btn btn-success" href="{% url 'userrecommendations_add' %}"> 
+		<i class="icon-plus-sign icon-white"></i></a>
+    </div>
+
+    <div class="row">
+	<p></p>
+    </div>
+    <div class="row span2 pull-right offset4" id="checkboxstatus">
+      		<p id="checkboxcount">0</p>
+    </div>
+    {% if userrecommendations_list %}
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Park</th>
+                <th>Comments</th>
+                <th>Rating </th>
+                <th></th>
+            </tr>
+        </thead>
+<!--     <tbody data-provides="rowlink" class='tblRows'> -->
+     <tbody class='tblRows'>
+        {% autopaginate userrecommendations_list 10 %}
+        {% for userrec in userrecommendations_list %}
+            <tr>
+                <td><a href="{% url 'userrecommendations_edit' id=userrec.user.id park=userrec.park.id %}" class="rowlink" > {{ userrec.user }} </a></td>
+                <td>{{ userrec.park.name }} </td>
+                <td>{{ userrec.comments }} </td>
+                <td>{{ userrec.rating }} </td>
+		<td> <input type="checkbox" name="delete_list" id="delete_list[]" value="{{userrec.id}}"/> 
+		</td>
+            </tr>
+        {% endfor %}
+     </tbody>
+    </table>
+</form>
+    <div class="row">
+      <div class="span11">
+        {% paginate %}
+      </div>
+    </div>
+    {% else %}
+        <h2>No records.</h2>
+    {% endif %}
+
+{% endblock %}
