@@ -8,18 +8,12 @@
 {% csrf_token %}
     <div class="row">
        <span class="span11"><h2>Park Information</h2></span>
-       <button type="submit" class="span1 pull-right offset1 deleteConfirm btn btn-danger">
-		<i class="icon-trash icon-white"></i>  
-	</button>
        <a class="span1 pull-right offset1 btn btn-success" href="{% url 'parkinfo_add' %}"> 
 		<i class="icon-plus-sign icon-white"></i></a>
     </div>
 
     <div class="row">
 	<p></p>
-    </div>
-    <div class="row span2 pull-right offset4" id="checkboxstatus">
-      		<p id="checkboxcount">0</p>
     </div>
     {% if parkinfo_list %}
     <table class="table table-stripped">
@@ -31,7 +25,6 @@
                 <th>Park Size (acres)</th>
                 <th>URL </th>
                 <th>Avg Rating</th>
-                <th></th>
             </tr>
         </thead>
 <!--     <tbody data-provides="rowlink" class='tblRows'> -->
@@ -45,7 +38,6 @@
                 <td>{{ park.park_size }} </td>
                 <td>{{ park.url }} </td>
                 <td>{{ park.average_user_rec }} </td>
-		<td> <input type="checkbox" name="delete_list" id="delete_list[]" value="{{park.id}}"/> 
 		</td>
             </tr>
         {% endfor %}

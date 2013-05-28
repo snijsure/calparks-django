@@ -14,7 +14,9 @@ from django import http
 import datetime
 from django.utils import simplejson
 from django.conf import settings
-
+from django.db.models import Avg
+from django.db.models import Sum
+import math
 
 from calparks.models import ParkInfo, UserRecommendations 
 from calparks.forms import ParkInfoForm, UserRecommendationsForm
@@ -29,10 +31,8 @@ class ParkInfoDetail(DetailView):
 class ParkInfoList(ListView):
     context_object_name = "parkinfo_list"
     model = ParkInfo
-    print "Called ParkInfoList"
     def get_queryset(self, **kwargs):
         all_entries = ParkInfo.objects.all()
-        print all_entries
         return ParkInfo.objects.all()
 
 @login_required
@@ -63,8 +63,7 @@ class UserRecommendationsList(ListView):
     context_object_name = "userrecommendations_list"
     model = UserRecommendations
     def get_queryset(self, **kwargs):
-        kwargs['user'] = self.request.user
-        return UserRecommendations.objects.filter(**kwargs)
+        return UserRecommendations.objects.filter(user__username=self.request.user)
 
 
 
@@ -73,9 +72,15 @@ def userrecommendations_add(request, template_name='calparks/userrecommendations
     if request.method == 'POST':
         form = UserRecommendationsForm(request.POST)
         if form.is_valid():
+            park = request.POST['park']
+            allParkEntries = UserRecommendations.objects.filter(park__id=park)
+            avg = allParkEntries.aggregate(Avg('user_rating'))
+            intAvg = math.ceil(avg['user_rating__avg'])
+#            avgRec = UserRecommendations.objects.filter(park__id=park).aggregate(Avg(user_rating))
             userrecommendations = form.save(commit=False)
             userrecommendations.user = request.user
             userrecommendations.save()
+            ParkInfo.objects.filter(id=park).update(average_user_rec=intAvg)
             return HttpResponseRedirect(reverse('userrecommendations_list' ))
         else:
             print 'Form is not valid....'
@@ -92,4 +97,3 @@ def userrecommendations_add(request, template_name='calparks/userrecommendations
             print form.non_field_errors
 
     return render(request, template_name, {'form': form})
-

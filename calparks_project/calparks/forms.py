@@ -8,7 +8,7 @@ from calparks.models import ParkInfo, UserRecommendations
 class ParkInfoForm(ModelForm):
     class Meta:
         model = ParkInfo
-        fields = ( 'name', 'county', 'park_type', 'park_size', 'url', 'average_user_rec') 
+        fields = ( 'name', 'county', 'park_type', 'park_size', 'url')
     def __init__(self, *args,**kwargs):
         # Call the original __init__ method before assigning field overloads        
         super(ParkInfoForm,self).__init__(*args,**kwargs)
@@ -17,7 +17,7 @@ class ParkInfoForm(ModelForm):
         self.fields['name'].widget.attrs['placeholder'] = u'Park Name'
         self.fields['county'].required = True
         self.fields['county'].label = ""
-        self.fields['county'].widget.attrs['placeholder'] = u'Count'
+        self.fields['county'].widget.attrs['placeholder'] = u'County'
         self.fields['park_type'].required = True
         self.fields['park_type'].label = ""
         self.fields['park_type'].widget.attrs['placeholder'] = u'Park Type'
@@ -27,8 +27,6 @@ class ParkInfoForm(ModelForm):
         self.fields['url'].required = True
         self.fields['url'].label = ""
         self.fields['url'].widget.attrs['placeholder'] = u'Park Website link'
-        self.fields['average_user_rec'].label = ""
-        self.fields['average_user_rec'].widget.attrs['placeholder'] = u'Averagr User recommendaiton'
         self.helper = FormHelper()
         self.helper.help_text_inline = True
         self.helper.layout = Layout (
@@ -41,8 +39,7 @@ class ParkInfoForm(ModelForm):
                             Div('park_size',css_class='span2 offset4'),
                             css_class='row-fluid'),
                         Div(
-                            Div('url',css_class='span2'),
-                            Div('average_user_rec', css_class='span2 offset4'),
+                            Div('url',css_class='span6'),
                             css_class='row-fluid'),
             FormActions(
                   Submit('save_changes', 'Save changes', css_class="btn-primary"),

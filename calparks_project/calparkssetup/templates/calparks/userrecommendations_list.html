@@ -7,19 +7,13 @@
 <form action="{% url 'userrecommendations_add' %}" method="post">
 {% csrf_token %}
     <div class="row">
-       <span class="span11"><h2>Park Review</h2></span>
-       <button type="submit" class="span1 pull-right offset1 deleteConfirm btn btn-danger">
-		<i class="icon-trash icon-white"></i>  
-	</button>
+       <span class="span11"><h2>Your Park Reviews</h2></span>
        <a class="span1 pull-right offset1 btn btn-success" href="{% url 'userrecommendations_add' %}"> 
 		<i class="icon-plus-sign icon-white"></i></a>
     </div>
 
     <div class="row">
 	<p></p>
-    </div>
-    <div class="row span2 pull-right offset4" id="checkboxstatus">
-      		<p id="checkboxcount">0</p>
     </div>
     {% if userrecommendations_list %}
     <table class="table table-stripped">
@@ -29,7 +23,6 @@
                 <th>Park</th>
                 <th>Comments</th>
                 <th>Rating </th>
-                <th></th>
             </tr>
         </thead>
 <!--     <tbody data-provides="rowlink" class='tblRows'> -->
@@ -41,7 +34,6 @@
                 <td>{{ userrec.park.name }} </td>
                 <td>{{ userrec.comments }} </td>
                 <td>{{ userrec.rating }} </td>
-		<td> <input type="checkbox" name="delete_list" id="delete_list[]" value="{{userrec.id}}"/> 
 		</td>
             </tr>
         {% endfor %}
@@ -54,7 +46,7 @@
       </div>
     </div>
     {% else %}
-        <h2>No records.</h2>
+        <h3>You currently have no reviews. Please add your recommendations</h2>
     {% endif %}
 
 {% endblock %}
