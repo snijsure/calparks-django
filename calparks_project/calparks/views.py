@@ -21,12 +21,37 @@ import math
 from calparks.models import ParkInfo, UserRecommendations 
 from calparks.forms import ParkInfoForm, UserRecommendationsForm
 
-class ParkInfoDetail(DetailView):
-    context_object_name = "parkinfo_detail"
-    model = ParkInfo
-    def get_context_data(self, **kwargs):
-        ctx = super(DetailView, self).get_context_data(**kwargs)
-        return ctx
+from django.db.models.query import QuerySet
+from pprint import PrettyPrinter
+
+def dprint(object, stream=None, indent=1, width=80, depth=None):
+    """
+    A small addition to pprint that converts any Django model objects to dictionaries so they print prettier.
+
+    h3. Example usage
+
+        >>> from toolbox.dprint import dprint
+        >>> from app.models import Dummy
+        >>> dprint(Dummy.objects.all().latest())
+         {'first_name': u'Ben',
+          'last_name': u'Welsh',
+          'city': u'Los Angeles',
+          'slug': u'ben-welsh',
+    """
+    # Catch any singleton Django model object that might get passed in
+    if getattr(object, '__metaclass__', None):
+        if object.__metaclass__.__name__ == 'ModelBase':
+            # Convert it to a dictionary
+            object = object.__dict__
+    
+    # Catch any Django QuerySets that might get passed in
+    elif isinstance(object, QuerySet):
+        # Convert it to a list of dictionaries
+        object = [i.__dict__ for i in object]
+        
+    # Pass everything through pprint in the typical way
+    printer = PrettyPrinter(stream=stream, indent=indent, width=width, depth=depth)
+    printer.pprint(object)
 
 class ParkInfoList(ListView):
     context_object_name = "parkinfo_list"
@@ -34,6 +59,21 @@ class ParkInfoList(ListView):
     def get_queryset(self, **kwargs):
         all_entries = ParkInfo.objects.all()
         return ParkInfo.objects.all()
+
+class ParkInfoDetail(DetailView):
+    context_object_name = "parkinfo_detail"
+    model = ParkInfo
+    def get_context_data(self, **kwargs):
+        ctx = super(DetailView, self).get_context_data(**kwargs)
+        return ctx
+
+@login_required
+def parkinfo_reviews(request, pk ):
+    pkinfo = ParkInfo.objects.filter(id = pk)
+    reviews = UserRecommendations.objects.filter(park__id=pk)
+    template_name='calparks/parkinfo_detail.html'
+    return render(request, template_name, {'pkinfo':pkinfo, 'reviews':reviews })
+
 
 @login_required
 def parkinfo_add(request, id=None, template_name='calparks/parkinfo_form.html'):

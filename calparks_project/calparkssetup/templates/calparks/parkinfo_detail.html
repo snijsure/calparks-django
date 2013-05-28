@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="accordion" id="accordion2">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <strong>Park Reviews</strong>
+        </a>
+      </div>
+      <div id="collapseOne" class="accordion-body in collapse" style="height: auto; ">
+        <div class="accordion-inner">
+                {% for item in pkinfo %} 
+		<table class="table-condensed"> 
+		<tr>
+		<td><strong>Park Name </strong></td> <td align='right'> {{ item.name }}</td>
+		</tr>
+		<tr>
+		<td><strong>Park County</strong> </td> <td align='right'> {{ item.county }}</td>
+		</tr>
+		</table>
+                {% endfor %}
+
+        </div>
+      </div>
+    </div>
+</div>
+<hr>
+<div class="row-fluid">
+	<h2>Review data</h2>
+	{% for r in reviews %}
+            User {{ r.user }} Rating {{ r.user_rating }}  on {{ r.rec_timestamp }} 
+            <br>
+            {{ r.comments }} 
+            <hr>
+	{% endfor %}
+</div>	
+{% endblock %}

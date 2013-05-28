@@ -6,6 +6,7 @@ from calparks.forms import ParkInfoForm, UserRecommendationsForm
 urlpatterns = patterns('',
     url(r'^park/add/$', 'calparks.views.parkinfo_add', name='parkinfo_add'),
     url(r'^park/list/$', login_required(ParkInfoList.as_view()), name='parkinfo_list'),
+    url(r'^park/list/(?P<pk>\d+)/$', 'calparks.views.parkinfo_reviews', name='parkinfo_reviews'),
     url(r'^park/(?P<id>\d+)/edit/$', 'calparks.views.parkinfo_add', name='parkinfo_edit'),
 
     url(r'^review/add/$', 'calparks.views.userrecommendations_add', name='userrecommendations_add'),
