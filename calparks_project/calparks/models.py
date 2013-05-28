@@ -15,6 +15,9 @@ class ParkInfo(models.Model):
     class Meta:
         verbose_name = "Park Information"
         verbose_name_plural = "Park Information"
+    #So the drop down will show park name
+    def __unicode__(self):
+        return self.name
 
 class UserRecommendations(models.Model):
     user = models.ForeignKey(User,on_delete=models.PROTECT)

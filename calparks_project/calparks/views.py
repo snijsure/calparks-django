@@ -39,8 +39,6 @@ class ParkInfoList(ListView):
 def parkinfo_add(request, id=None, template_name='calparks/parkinfo_form.html'):
     if id:
         parkinfo = get_object_or_404(ParkInfo, id=id)
-        if parkinfo.user != request.user:
-            return HttpResponseForbidden()
     else:
         parkinfo = ParkInfo()
     if request.method == 'POST':
@@ -65,4 +63,33 @@ class UserRecommendationsList(ListView):
     context_object_name = "userrecommendations_list"
     model = UserRecommendations
     def get_queryset(self, **kwargs):
-        return UserRecommendations.objects.filter(calparks__userprofile__user=self.request.user).order_by('user_rating')
+        kwargs['user'] = self.request.user
+        return UserRecommendations.objects.filter(**kwargs)
+
+
+
+@login_required
+def userrecommendations_add(request, template_name='calparks/userrecommendations_add.html'):
+    if request.method == 'POST':
+        form = UserRecommendationsForm(request.POST)
+        if form.is_valid():
+            userrecommendations = form.save(commit=False)
+            userrecommendations.user = request.user
+            userrecommendations.save()
+            return HttpResponseRedirect(reverse('userrecommendations_list' ))
+        else:
+            print 'Form is not valid....'
+    else:
+        form = UserRecommendationsForm()
+        if form.is_valid():
+            userrecommendations = form.save(commit=False)
+            userrecommendations.user = request.user
+            userrecommendations.save()
+        else:
+            print 'Form is not valid Error => '
+            print form.errors
+            print 'Form is not valid non_filed_errrors => '
+            print form.non_field_errors
+
+    return render(request, template_name, {'form': form})
+

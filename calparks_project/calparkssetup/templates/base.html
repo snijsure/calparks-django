@@ -83,10 +83,9 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">Sidebar</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+              <li><a href="{% url 'parkinfo_list'%}">Park Info</a></li>
+              <li><a href="{% url 'userrecommendations_list'%}">User Reviews</a></li>
+              <li><a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->

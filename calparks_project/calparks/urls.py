@@ -7,4 +7,8 @@ urlpatterns = patterns('',
     url(r'^park/add/$', 'calparks.views.parkinfo_add', name='parkinfo_add'),
     url(r'^park/list/$', login_required(ParkInfoList.as_view()), name='parkinfo_list'),
     url(r'^park/(?P<id>\d+)/edit/$', 'calparks.views.parkinfo_add', name='parkinfo_edit'),
+
+    url(r'^review/add/$', 'calparks.views.userrecommendations_add', name='userrecommendations_add'),
+    url(r'^review/list/$', login_required(UserRecommendationsList.as_view()), name='userrecommendations_list'),
+    url(r'^review/(?P<id>\d+)/(?P<park>\d+)/edit/$', 'calparks.views.userrecommendations_add', name='userrecommendations_edit'),
 )
