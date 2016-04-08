@@ -9,10 +9,9 @@ from django.db import models
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import simplejson as json
+import json
 from django import http
 import datetime
-from django.utils import simplejson
 from django.conf import settings
 from django.db.models import Avg
 from django.db.models import Sum
@@ -23,6 +22,8 @@ from calparks.forms import ParkInfoForm, UserRecommendationsForm
 
 from django.db.models.query import QuerySet
 from pprint import PrettyPrinter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 
 def dprint(object, stream=None, indent=1, width=80, depth=None):
     """
@@ -56,6 +57,7 @@ def dprint(object, stream=None, indent=1, width=80, depth=None):
 class ParkInfoList(ListView):
     context_object_name = "parkinfo_list"
     model = ParkInfo
+    paginate_by = 10
     def get_queryset(self, **kwargs):
         all_entries = ParkInfo.objects.all()
         return ParkInfo.objects.all()

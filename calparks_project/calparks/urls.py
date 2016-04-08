@@ -1,7 +1,11 @@
-from django.conf.urls.defaults import *
+#from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
 from calparks.views import ParkInfoDetail, ParkInfoList, UserRecommendationsDetail, UserRecommendationsList 
 from calparks.forms import ParkInfoForm, UserRecommendationsForm
+from django.conf.urls import patterns
+from django.conf.urls import url
+
+
 
 urlpatterns = patterns('',
     url(r'^park/add/$', 'calparks.views.parkinfo_add', name='parkinfo_add'),
